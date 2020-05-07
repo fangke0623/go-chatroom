@@ -7,17 +7,19 @@ import (
 	"time"
 )
 
-var Sql *sqlx.DB
+var Mysql *sqlx.DB
 
-func Init() {
+const dataSourceName = "root:.Fangke123@tcp(39.108.145.221:3306)/wechat?charset=utf8"
 
-	db, err := sqlx.Open("mysql", "root:.Fangke123@tcp(39.108.145.221:3306)/wechat?charset=utf8")
+func SqlInit() {
+
+	db, err := sqlx.Open("mysql", dataSourceName)
 	if err != nil {
 		log.Println("数据库连接异常", err)
 	}
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(10)
 	db.SetConnMaxLifetime(60 * time.Second)
-	Sql = db
+	Mysql = db
 
 }

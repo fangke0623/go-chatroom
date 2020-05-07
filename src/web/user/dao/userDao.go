@@ -7,11 +7,11 @@ import (
 
 func SelectUserList(form model.UserForm) []model.User {
 	var userList []model.User
-	sql := config.Sql
+	mysql := config.Mysql
 	queryString := "select * from f_user"
 	if form.Id != "" {
 		queryString += " where id = " + form.Id
 	}
-	_ = sql.Select(&userList, queryString)
+	_ = mysql.Select(&userList, queryString)
 	return userList
 }
