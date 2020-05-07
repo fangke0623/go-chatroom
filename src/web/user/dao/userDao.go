@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"chatroom/src/config"
-	"chatroom/src/web/user/model"
+	"wechat/src/config"
+	"wechat/src/web/user/model"
 )
 
 func SelectUserList(form model.UserForm) []model.User {

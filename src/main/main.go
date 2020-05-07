@@ -1,10 +1,10 @@
 package main
 
 import (
-	"chatroom/src/common"
-	"chatroom/src/config"
 	"log"
 	"net/http"
+	"wechat/src/common"
+	"wechat/src/config"
 )
 
 func main() {

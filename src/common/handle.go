@@ -1,8 +1,8 @@
 package common
 
 import (
-	userService "chatroom/src/web/user/service"
 	"net/http"
+	userService "wechat/src/web/user/service"
 )
 
 func HandleResponse(writer http.ResponseWriter, request *http.Request) {

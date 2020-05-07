@@ -1,12 +1,12 @@
 package service
 
 import (
-	"chatroom/src/web/user/dao"
-	"chatroom/src/web/user/model"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"wechat/src/web/user/dao"
+	"wechat/src/web/user/model"
 )
 
 func SelectUserList(writer http.ResponseWriter, request *http.Request) {
