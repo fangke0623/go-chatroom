@@ -9,7 +9,7 @@ import (
 
 var Mysql *sqlx.DB
 
-const dataSourceName = "root:.Fangke123@tcp(39.108.145.221:3306)/wechat?charset=utf8"
+const dataSourceName = "root:.Fangke123@tcp(39.108.145.221:3306)/chatroom?charset=utf8"
 
 func SqlInit() {
 

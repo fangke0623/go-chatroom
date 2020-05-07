@@ -9,18 +9,18 @@ import (
 	"wechat/src/web/user/model"
 )
 
-func SelectUserList(writer http.ResponseWriter, request *http.Request) {
-	request.ParseForm()
-	var param = &request.PostForm
+func SelectUserList(param []byte) []byte {
 
 	form := model.UserForm{}
-	form.Id = param.Get("id")
-	form.Name = param.Get("name")
+	_ = json.Unmarshal(param, &form)
 	log.Println(form)
 	list := dao.SelectUserList(form)
 	jsons, err := json.Marshal(list)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	writer.Write(jsons)
+	return jsons
+}
+func RegisterUser(request *http.Request) {
+
 }
