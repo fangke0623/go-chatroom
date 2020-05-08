@@ -3,8 +3,8 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
+	"time"
+	"wechat/src/common/util"
 	"wechat/src/web/user/dao"
 	"wechat/src/web/user/model"
 )
@@ -12,8 +12,8 @@ import (
 func SelectUserList(param []byte) []byte {
 
 	form := model.UserForm{}
-	_ = json.Unmarshal(param, &form)
-	log.Println(form)
+	util.HandleParamsToStruct(param, &form)
+
 	list := dao.SelectUserList(form)
 	jsons, err := json.Marshal(list)
 	if err != nil {
@@ -21,6 +21,15 @@ func SelectUserList(param []byte) []byte {
 	}
 	return jsons
 }
-func RegisterUser(request *http.Request) {
+func RegisterUser(param []byte) bool {
+
+	user := model.User{}
+
+	util.HandleParamsToStruct(param, &user)
+	user.Id = util.GenerateUUID()
+	user.CreateTime = time.Now().String()
+	dao.SaveUser(user)
+
+	return true
 
 }
