@@ -1,4 +1,4 @@
-package service
+package user
 
 import (
 	"encoding/json"
@@ -6,16 +6,14 @@ import (
 	"strings"
 	"time"
 	"wechat/src/common/util"
-	"wechat/src/web/user/dao"
-	"wechat/src/web/user/model"
 )
 
-func SelectUserList(param []byte) []byte {
+func FindUserList(param []byte) []byte {
 
-	form := model.UserForm{}
+	form := UserForm{}
 	util.HandleParamsToStruct(param, &form)
 
-	list := dao.SelectUserList(form)
+	list := SelectUserList(form)
 	jsons, err := json.Marshal(list)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -24,14 +22,14 @@ func SelectUserList(param []byte) []byte {
 }
 func RegisterUser(param []byte) []byte {
 
-	user := model.User{}
+	user := User{}
 	result := ""
 
 	util.HandleParamsToStruct(param, &user)
 	if strings.Compare(user.Password, user.RePassword) == 1 {
 		user.Id = util.GenerateUUID()
 		user.CreateTime = time.Now().String()
-		dao.SaveUser(user)
+		SaveUser(user)
 		result = "注册成功"
 	} else {
 		result = "两次密码输入不一致"
@@ -40,9 +38,9 @@ func RegisterUser(param []byte) []byte {
 }
 func Login(param []byte) []byte {
 	var result []byte
-	form := model.UserForm{}
+	form := UserForm{}
 	util.HandleParamsToStruct(param, &form)
-	user := dao.GetUserByUsername(form.Username)
+	user := GetUserByUsername(form.Username)
 	if user.Password != "" {
 		if strings.Compare(user.Password, form.Password) == 1 {
 			jsons, err := json.Marshal(user)

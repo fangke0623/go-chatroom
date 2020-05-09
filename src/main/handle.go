@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	userService "wechat/src/web/user/service"
+	"wechat/src/web/user"
 )
 
 func HandleResponse(writer http.ResponseWriter, request *http.Request) {
@@ -15,11 +15,11 @@ func HandleResponse(writer http.ResponseWriter, request *http.Request) {
 	}
 	switch request.URL.Path {
 	case "/user/list":
-		writer.Write(userService.SelectUserList(param))
+		writer.Write(user.FindUserList(param))
 	case "/user/register":
-		writer.Write(userService.RegisterUser(param))
+		writer.Write(user.RegisterUser(param))
 	case "/user/login":
-		writer.Write(userService.Login(param))
+		writer.Write(user.Login(param))
 	}
 }
 func handleParams(request *http.Request) ([]byte, error) {

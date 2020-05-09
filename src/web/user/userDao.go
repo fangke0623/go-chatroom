@@ -1,13 +1,12 @@
-package dao
+package user
 
 import (
 	"log"
 	"wechat/src/config"
-	"wechat/src/web/user/model"
 )
 
-func SelectUserList(form model.UserForm) []model.User {
-	var userList []model.User
+func SelectUserList(form UserForm) []User {
+	var userList []User
 	mysql := config.Mysql
 	queryString := "select * from f_user"
 	if form.Id != "" {
@@ -16,15 +15,15 @@ func SelectUserList(form model.UserForm) []model.User {
 	_ = mysql.Select(&userList, queryString)
 	return userList
 }
-func GetUserByUsername(username string) model.User {
-	var user = model.User{}
+func GetUserByUsername(username string) User {
+	var user = User{}
 	mysql := config.Mysql
 	queryString := "select * from f_user where username = " + username
 	_ = mysql.Select(&user, queryString)
 	return user
 }
 
-func SaveUser(user model.User) {
+func SaveUser(user User) {
 	mysql := config.Mysql
 	tx := mysql.MustBegin()
 	result, err := tx.NamedExec("insert into f_user values (:id,:email,:user_name,:password,:create_time,:nickname,:mobile)", &user)
