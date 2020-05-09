@@ -16,11 +16,10 @@ func HandleResponse(writer http.ResponseWriter, request *http.Request) {
 	switch request.URL.Path {
 	case "/user/list":
 		writer.Write(userService.SelectUserList(param))
-	case "/user/add":
-		if userService.RegisterUser(param) {
-			writer.WriteHeader(200)
-		}
-
+	case "/user/register":
+		writer.Write(userService.RegisterUser(param))
+	case "/user/login":
+		writer.Write(userService.Login(param))
 	}
 }
 func handleParams(request *http.Request) ([]byte, error) {
@@ -29,9 +28,7 @@ func handleParams(request *http.Request) ([]byte, error) {
 	_ = request.ParseForm()
 	if request.Method == "POST" {
 		param, err = json.Marshal(request.PostForm)
-
 	}
-
 	if request.Method == "GET" {
 		param, err = json.Marshal(request.Form)
 	}

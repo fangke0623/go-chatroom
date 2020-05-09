@@ -16,6 +16,13 @@ func SelectUserList(form model.UserForm) []model.User {
 	_ = mysql.Select(&userList, queryString)
 	return userList
 }
+func GetUserByUsername(username string) model.User {
+	var user = model.User{}
+	mysql := config.Mysql
+	queryString := "select * from f_user where username = " + username
+	_ = mysql.Select(&user, queryString)
+	return user
+}
 
 func SaveUser(user model.User) {
 	mysql := config.Mysql

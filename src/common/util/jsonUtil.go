@@ -15,7 +15,6 @@ func HandleParamsToStruct(param []byte, object interface{}) {
 	_ = json.Unmarshal(param, &src)
 
 	var dest map[string]interface{}
-
 	m := src
 	n := make(map[string]interface{})
 	for k := range m {

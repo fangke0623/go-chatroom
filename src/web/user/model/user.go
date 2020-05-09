@@ -8,4 +8,5 @@ type User struct {
 	CreateTime string `json:"createTime" db:"create_time"`
 	Nickname   string `json:"nickname" db:"nickname"`
 	Mobile     string `json:"mobile" db:"mobile"`
+	RePassword string `json:"rePassword"`
 }
