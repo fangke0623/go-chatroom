@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"wechat/src/web/discuss"
 	"wechat/src/web/discussMan"
+	"wechat/src/web/discussMsg"
 	"wechat/src/web/user"
 )
 
@@ -22,6 +23,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		writer.Write(user.RegisterUser(param))
 	case "/user/login":
 		writer.Write(user.Login(param))
+
 	case "/discuss/add":
 		writer.Write(discuss.AddDiscuss(param))
 	case "/discuss/update":
@@ -29,6 +31,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	case "/discuss/delete":
 		writer.Write(discuss.DeleteDiscuss(param))
 	case "/discuss/list":
+
 		writer.Write(discuss.FindDiscussList(param))
 	case "/discussMan/list":
 		writer.Write(discussMan.FindDiscussManList(param))
@@ -37,6 +40,10 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	case "/discussMan/update":
 		writer.Write(discussMan.AddDiscussMan(param))
 
+	case "/discussMsg/list":
+		writer.Write(discussMsg.FindDiscussMsgList(param))
+	case "/discussMsg/add":
+		writer.Write(discussMsg.AddDiscussMsg(param))
 	}
 
 }
