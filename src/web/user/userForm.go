@@ -1,6 +1,6 @@
 package user
 
-type UserForm struct {
+type Form struct {
 	Id        string `json:"id"`
 	Name      string `json:"name"`
 	Password  string `json:"password"`

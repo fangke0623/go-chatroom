@@ -10,7 +10,7 @@ import (
 
 func FindUserList(param []byte) []byte {
 
-	form := UserForm{}
+	form := Form{}
 	util.HandleParamsToStruct(param, &form)
 
 	list := SelectUserList(form)
@@ -26,19 +26,25 @@ func RegisterUser(param []byte) []byte {
 	result := ""
 
 	util.HandleParamsToStruct(param, &user)
+	dbUser := GetUserByUsername(user.UserName)
+	if dbUser.UserName != "" {
+		result = "用户名已存在"
+		return []byte(result)
+	}
 	if strings.Compare(user.Password, user.RePassword) == 1 {
 		user.Id = util.GenerateUUID()
-		user.CreateTime = time.Now().String()
+		user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 		SaveUser(user)
 		result = "注册成功"
 	} else {
 		result = "两次密码输入不一致"
+		return []byte(result)
 	}
 	return []byte(result)
 }
 func Login(param []byte) []byte {
 	var result []byte
-	form := UserForm{}
+	form := Form{}
 	util.HandleParamsToStruct(param, &form)
 	user := GetUserByUsername(form.Username)
 	if user.Password != "" {

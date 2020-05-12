@@ -1,13 +1,15 @@
-package main
+package handle
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"wechat/src/web/discuss"
+	"wechat/src/web/discussMan"
 	"wechat/src/web/user"
 )
 
-func HandleResponse(writer http.ResponseWriter, request *http.Request) {
+func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 
 	param, err := handleParams(request)
 	if err != nil {
@@ -20,7 +22,23 @@ func HandleResponse(writer http.ResponseWriter, request *http.Request) {
 		writer.Write(user.RegisterUser(param))
 	case "/user/login":
 		writer.Write(user.Login(param))
+	case "/discuss/add":
+		writer.Write(discuss.AddDiscuss(param))
+	case "/discuss/update":
+		writer.Write(discuss.UpdateDiscuss(param))
+	case "/discuss/delete":
+		writer.Write(discuss.DeleteDiscuss(param))
+	case "/discuss/list":
+		writer.Write(discuss.FindDiscussList(param))
+	case "/discussMan/list":
+		writer.Write(discussMan.FindDiscussManList(param))
+	case "/discussMan/add":
+		writer.Write(discussMan.AddDiscussMan(param))
+	case "/discussMan/update":
+		writer.Write(discussMan.AddDiscussMan(param))
+
 	}
+
 }
 func handleParams(request *http.Request) ([]byte, error) {
 	var param []byte
