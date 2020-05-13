@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"wechat/src/common/exception"
 	"wechat/src/web/discuss"
 	"wechat/src/web/discussMan"
 	"wechat/src/web/discussMsg"
@@ -13,39 +14,55 @@ import (
 func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 
 	param, err := handleParams(request)
+	var result interface{}
+	var e exception.Error
 	if err != nil {
 		log.Print("form转换json异常：", err)
 	}
 	switch request.URL.Path {
+	//user
 	case "/user/list":
-		writer.Write(user.FindUserList(param))
+		result, e = user.FindUserList(param)
+		break
+	case "/user/detail":
+		result, e = user.DetailUser(param)
+		break
 	case "/user/register":
-		writer.Write(user.RegisterUser(param))
+		result, e = user.RegisterUser(param)
+		break
 	case "/user/login":
-		writer.Write(user.Login(param))
+		result, e = user.Login(param)
+		break
+	case "/user/edit":
+		result, e = user.Edit(param)
+		break
 
+	//discuss
 	case "/discuss/add":
-		writer.Write(discuss.AddDiscuss(param))
+		result, e = discuss.AddDiscuss(param)
 	case "/discuss/update":
-		writer.Write(discuss.UpdateDiscuss(param))
+		result, e = discuss.UpdateDiscuss(param)
 	case "/discuss/delete":
-		writer.Write(discuss.DeleteDiscuss(param))
+		result, e = discuss.DeleteDiscuss(param)
 	case "/discuss/list":
+		result, e = discuss.FindDiscussList(param)
 
-		writer.Write(discuss.FindDiscussList(param))
+	//discussMan
+
 	case "/discussMan/list":
-		writer.Write(discussMan.FindDiscussManList(param))
+		result, e = discussMan.FindDiscussManList(param)
 	case "/discussMan/add":
-		writer.Write(discussMan.AddDiscussMan(param))
+		result, e = discussMan.AddDiscussMan(param)
 	case "/discussMan/update":
-		writer.Write(discussMan.AddDiscussMan(param))
+		result, e = discussMan.AddDiscussMan(param)
 
+	//discussMsg
 	case "/discussMsg/list":
-		writer.Write(discussMsg.FindDiscussMsgList(param))
+		result, e = discussMsg.FindDiscussMsgList(param)
 	case "/discussMsg/add":
-		writer.Write(discussMsg.AddDiscussMsg(param))
+		result, e = discussMsg.AddDiscussMsg(param)
 	}
-
+	writerJson(writer, result, e)
 }
 func handleParams(request *http.Request) ([]byte, error) {
 	var param []byte
@@ -58,4 +75,16 @@ func handleParams(request *http.Request) ([]byte, error) {
 		param, err = json.Marshal(request.Form)
 	}
 	return param, err
+}
+
+func writerJson(writer http.ResponseWriter, param interface{}, exception exception.Error) {
+	resultMap := make(map[string]interface{})
+	resultMap["data"] = param
+	resultMap["errorCode"] = exception.ErrorCode
+	resultMap["errorMsg"] = exception.ErrorMsg
+	result, _ := json.Marshal(resultMap)
+	_, err := writer.Write(result)
+	if err != nil {
+		log.Println(err)
+	}
 }

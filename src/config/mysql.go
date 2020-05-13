@@ -15,7 +15,9 @@ func SqlInit() {
 
 	db, err := sqlx.Open("mysql", dataSourceName)
 	if err != nil {
-		log.Println("数据库连接异常", err)
+		log.Fatal("数据库连接异常", err)
+	} else {
+		log.Println("mysql connect success")
 	}
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(10)

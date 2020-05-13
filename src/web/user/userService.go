@@ -5,46 +5,59 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"wechat/src/common/exception"
 	"wechat/src/common/util"
 )
 
-func FindUserList(param []byte) []byte {
+func FindUserList(param []byte) (interface{}, exception.Error) {
 
+	e := exception.Error{}
 	form := Form{}
 	util.HandleParamsToStruct(param, &form)
 
 	list := SelectUserList(form)
-	jsons, err := json.Marshal(list)
+	return list, e
+}
+func DetailUser(param []byte) ([]byte, exception.Error) {
+
+	form := Form{}
+	e := exception.Error{}
+
+	util.HandleParamsToStruct(param, &form)
+
+	user := GetUserById(form.Id)
+	jsons, err := json.Marshal(user)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	return jsons
+	return jsons, e
 }
-func RegisterUser(param []byte) []byte {
+func RegisterUser(param []byte) ([]byte, exception.Error) {
 
 	user := User{}
 	result := ""
-
+	e := exception.Error{}
 	util.HandleParamsToStruct(param, &user)
 	dbUser := GetUserByUsername(user.UserName)
 	if dbUser.UserName != "" {
-		result = "用户名已存在"
-		return []byte(result)
+		e = exception.UserNameIsExist
+		return []byte(result), e
 	}
 	if strings.Compare(user.Password, user.RePassword) == 1 {
 		user.Id = util.GenerateUUID()
 		user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 		SaveUser(user)
-		result = "注册成功"
+		e.ErrorMsg = "注册成功"
 	} else {
-		result = "两次密码输入不一致"
-		return []byte(result)
+		e = exception.PassWordIsInconsistent
+		return []byte(result), e
 	}
-	return []byte(result)
+	return []byte(result), e
 }
-func Login(param []byte) []byte {
-	var result []byte
+func Login(param []byte) ([]byte, exception.Error) {
+	e := exception.Error{}
 	form := Form{}
+	jsons := []byte("")
 	util.HandleParamsToStruct(param, &form)
 	user := GetUserByUsername(form.Username)
 	if user.Password != "" {
@@ -53,14 +66,29 @@ func Login(param []byte) []byte {
 			if err != nil {
 				fmt.Println("error:", err)
 			}
-			result = jsons
+			return jsons, e
 		} else {
-			result = []byte("密码不正确，请重新输入")
-
+			e = exception.PassWordIsWrong
 		}
 	} else {
-		result = []byte("该用户不存在")
+		e = exception.UserNotExist
 	}
-	return result
+	return jsons, e
 
+}
+func Edit(param []byte) (interface{}, exception.Error) {
+	e := exception.Error{}
+	user := User{}
+	util.HandleParamsToStruct(param, &user)
+	dbUser := GetUserById(user.Id)
+	if dbUser.UserName == "" {
+		e = exception.UserNotExist
+	}
+
+	user.Id = util.GenerateUUID()
+	user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
+	UpdateUserById(user)
+	e.ErrorMsg = "修改成功"
+
+	return "", e
 }

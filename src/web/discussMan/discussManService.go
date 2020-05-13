@@ -1,29 +1,25 @@
 package discussMan
 
 import (
-	"encoding/json"
-	"fmt"
 	"time"
+	"wechat/src/common/exception"
 	"wechat/src/common/util"
 )
 
-func FindDiscussManList(param []byte) []byte {
+func FindDiscussManList(param []byte) (interface{}, exception.Error) {
 	form := Form{}
-
+	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	list := SelectDiscussManList(form)
-	jsons, err := json.Marshal(list)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	return jsons
+
+	return list, e
 
 }
 
-func AddDiscussMan(param []byte) []byte {
+func AddDiscussMan(param []byte) (interface{}, exception.Error) {
 	discussMan := DiscussMan{}
 	result := ""
-
+	e := exception.Error{}
 	util.HandleParamsToStruct(param, &discussMan)
 
 	discussMan.CreateDate = time.Now().Format("2006-01-02 15:04:05")
@@ -31,5 +27,5 @@ func AddDiscussMan(param []byte) []byte {
 	SaveDiscussMan(discussMan)
 	result = "注册成功"
 
-	return []byte(result)
+	return []byte(result), e
 }

@@ -1,33 +1,29 @@
 package discussMsg
 
 import (
-	"encoding/json"
-	"fmt"
 	"time"
+	"wechat/src/common/exception"
 	"wechat/src/common/util"
 )
 
-func FindDiscussMsgList(param []byte) []byte {
+func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {
 	form := Form{}
-
+	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	list := SelectDiscussMsgList(form)
-	jsons, err := json.Marshal(list)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	return jsons
+
+	return list, e
 
 }
-func AddDiscussMsg(param []byte) []byte {
+func AddDiscussMsg(param []byte) (interface{}, exception.Error) {
 	discussMsg := DiscussMsg{}
 	result := ""
-
+	e := exception.Error{}
 	util.HandleParamsToStruct(param, &discussMsg)
 
 	discussMsg.CreateDate = time.Now().Format("2006-01-02 15:04:05")
 	discussMsg.UpdateDate = time.Now().Format("2006-01-02 15:04:05")
 	SaveDiscussMsg(discussMsg)
-	result = "注册成功"
-	return []byte(result)
+	e.ErrorMsg = "发送成功"
+	return []byte(result), e
 }

@@ -45,3 +45,29 @@ func SaveUser(user User) {
 		log.Println(err)
 	}
 }
+func GetUserById(id string) User {
+	var user = User{}
+	mysql := config.Mysql
+	queryString := "select * from f_user where id = \"" + id + "\""
+	err := mysql.Get(&user, queryString)
+	if err != nil {
+		log.Println(err)
+	}
+	return user
+}
+func UpdateUserById(user User) {
+	mysql := config.Mysql
+	tx := mysql.MustBegin()
+	result, err := tx.NamedExec("update f_user set email = :email,username = :username,password = :password,nickname = :nickname,mobile = :mobile where id = :id", &user)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = tx.Commit()
+	if result != nil {
+		log.Println(result)
+	}
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}

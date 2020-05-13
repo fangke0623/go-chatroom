@@ -1,14 +1,13 @@
 package discuss
 
 import (
-	"encoding/json"
-	"fmt"
 	"time"
+	"wechat/src/common/exception"
 	"wechat/src/common/util"
 )
 
-func AddDiscuss(param []byte) []byte {
-
+func AddDiscuss(param []byte) (interface{}, exception.Error) {
+	e := exception.Error{}
 	discuss := Discuss{}
 	result := ""
 
@@ -17,12 +16,12 @@ func AddDiscuss(param []byte) []byte {
 	discuss.CreateDate = time.Now().Format("2006-01-02 15:04:05")
 	discuss.UpdateDate = time.Now().Format("2006-01-02 15:04:05")
 	SaveDiscuss(discuss)
-	result = "注册成功"
+	e.ErrorMsg = "创建成功"
 
-	return []byte(result)
+	return []byte(result), e
 }
-func UpdateDiscuss(param []byte) []byte {
-
+func UpdateDiscuss(param []byte) (interface{}, exception.Error) {
+	e := exception.Error{}
 	discuss := Discuss{}
 	result := ""
 
@@ -30,12 +29,12 @@ func UpdateDiscuss(param []byte) []byte {
 
 	discuss.CreateDate = time.Now().String()
 	SaveDiscuss(discuss)
-	result = "修改成功"
+	e.ErrorMsg = "修改成功"
 
-	return []byte(result)
+	return []byte(result), e
 }
-func DeleteDiscuss(param []byte) []byte {
-
+func DeleteDiscuss(param []byte) (interface{}, exception.Error) {
+	e := exception.Error{}
 	discuss := Discuss{}
 	result := ""
 
@@ -45,17 +44,14 @@ func DeleteDiscuss(param []byte) []byte {
 	SaveDiscuss(discuss)
 	result = "删除成功"
 
-	return []byte(result)
+	return []byte(result), e
 }
-func FindDiscussList(param []byte) []byte {
+func FindDiscussList(param []byte) (interface{}, exception.Error) {
 
 	form := Form{}
-
+	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	list := SelectDiscussList(form)
-	jsons, err := json.Marshal(list)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	return jsons
+
+	return list, e
 }
