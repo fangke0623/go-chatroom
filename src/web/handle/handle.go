@@ -14,11 +14,11 @@ import (
 func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 
 	param, err := handleParams(request)
-	var result interface{}
-	var e exception.Error
 	if err != nil {
 		log.Print("form转换json异常：", err)
 	}
+	var result interface{}
+	var e exception.Error
 	switch request.URL.Path {
 	//user
 	case "/user/list":
@@ -40,27 +40,35 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	//discuss
 	case "/discuss/add":
 		result, e = discuss.AddDiscuss(param)
+		break
 	case "/discuss/update":
 		result, e = discuss.UpdateDiscuss(param)
+		break
 	case "/discuss/delete":
 		result, e = discuss.DeleteDiscuss(param)
+		break
 	case "/discuss/list":
 		result, e = discuss.FindDiscussList(param)
-
+		break
 	//discussMan
 
 	case "/discussMan/list":
 		result, e = discussMan.FindDiscussManList(param)
+		break
 	case "/discussMan/add":
 		result, e = discussMan.AddDiscussMan(param)
+		break
 	case "/discussMan/update":
 		result, e = discussMan.AddDiscussMan(param)
+		break
 
 	//discussMsg
 	case "/discussMsg/list":
 		result, e = discussMsg.FindDiscussMsgList(param)
+		break
 	case "/discussMsg/add":
 		result, e = discussMsg.AddDiscussMsg(param)
+		break
 	}
 	writerJson(writer, result, e)
 }
