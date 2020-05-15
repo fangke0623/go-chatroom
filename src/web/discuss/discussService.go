@@ -42,7 +42,7 @@ func DeleteDiscuss(param []byte) (interface{}, exception.Error) {
 
 	discuss.CreateDate = time.Now().String()
 	SaveDiscuss(discuss)
-	result = "删除成功"
+	e.ErrorMsg = "删除成功"
 
 	return []byte(result), e
 }
