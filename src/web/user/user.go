@@ -1,5 +1,7 @@
 package user
 
+import "time"
+
 type User struct {
 	Id         string `json:"id" db:"id"`
 	Email      string `json:"email" db:"email"`
@@ -9,4 +11,5 @@ type User struct {
 	Nickname   string `json:"nickname" db:"nickname"`
 	Mobile     string `json:"mobile" db:"mobile"`
 	RePassword string `json:"rePassword"`
+	LoginTime  time.Time
 }

@@ -7,7 +7,7 @@ import (
 
 func MapToStruct(m map[string]interface{}, output interface{}) {
 
-	mapstructure.Decode(m, output)
+	_ = mapstructure.Decode(m, output)
 }
 func HandleParamsToStruct(param []byte, object interface{}) {
 

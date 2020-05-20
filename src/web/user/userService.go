@@ -54,26 +54,21 @@ func RegisterUser(param []byte) ([]byte, exception.Error) {
 	}
 	return []byte(result), e
 }
-func Login(param []byte) ([]byte, exception.Error) {
+func Login(param []byte) (User, exception.Error) {
 	e := exception.Error{}
 	form := Form{}
-	jsons := []byte("")
 	util.HandleParamsToStruct(param, &form)
 	user := GetUserByUsername(form.Username)
 	if user.Password != "" {
-		if strings.Compare(user.Password, form.Password) == 1 {
-			jsons, err := json.Marshal(user)
-			if err != nil {
-				fmt.Println("error:", err)
-			}
-			return jsons, e
+		if strings.Compare(user.Password, form.Password) == 0 {
+			return user, e
 		} else {
 			e = exception.PassWordIsWrong
 		}
 	} else {
 		e = exception.UserNotExist
 	}
-	return jsons, e
+	return User{}, e
 
 }
 func Edit(param []byte) (interface{}, exception.Error) {

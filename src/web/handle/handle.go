@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"wechat/src/common/cookie"
 	"wechat/src/common/exception"
 	"wechat/src/web/discuss"
 	"wechat/src/web/discussMan"
@@ -32,6 +33,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		break
 	case "/user/login":
 		result, e = user.Login(param)
+		cookie.SetCookie(writer, result)
 		break
 	case "/user/edit":
 		result, e = user.Edit(param)
