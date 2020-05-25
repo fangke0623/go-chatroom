@@ -35,3 +35,19 @@ func SaveDiscussMan(discussMan DiscussMan) {
 		log.Println(err)
 	}
 }
+
+func UpdateDiscussMan(discussMan DiscussMan) {
+	mysql := config.Mysql
+	tx := mysql.MustBegin()
+	result, err := tx.NamedExec("update d_discuss_man set man_type = :man_type,remind = :remind,status = :status,update_date=:update_date where man_id=:man_id", &discussMan)
+	if err != nil {
+		log.Println(err)
+	}
+	err = tx.Commit()
+	if result != nil {
+		log.Println(result)
+	}
+	if err != nil {
+		log.Println(err)
+	}
+}

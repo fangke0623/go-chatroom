@@ -24,13 +24,11 @@ func SelectDiscussList(form Form) []Discuss {
 	var discuss []Discuss
 	mysql := config.Mysql
 	queryString := "select * from d_discuss where status = 1"
-	if form.UserId != "" && form.DiscussTitle != "" {
-		if form.UserId != "" {
-			queryString += "and user_id = \"" + form.UserId + "\""
-		}
-		if form.DiscussTitle != "" {
-			queryString += "and discuss_title like \"" + form.DiscussTitle + "%\""
-		}
+	if form.UserId != "" {
+		queryString += " and user_id = \"" + form.UserId + "\""
+	}
+	if form.DiscussTitle != "" {
+		queryString += " and discuss_title like \"" + form.DiscussTitle + "%\""
 	}
 	err := mysql.Select(&discuss, queryString)
 	if err != nil {

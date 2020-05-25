@@ -58,7 +58,18 @@ func GetUserById(id string) User {
 func UpdateUserById(user User) {
 	mysql := config.Mysql
 	tx := mysql.MustBegin()
-	result, err := tx.NamedExec("update f_user set email = :email,username = :username,password = :password,nickname = :nickname,mobile = :mobile where id = :id", &user)
+	queryString := "update f_user set "
+	if user.Password != "" {
+		queryString += "password=:password,"
+	}
+	if user.Nickname != "" {
+		queryString += "nickname=:nickname,"
+	}
+	if user.Mobile != "" {
+		queryString += "mobile=:mobile,"
+	}
+	queryString += "modify_time=:modify_time where id=:id"
+	result, err := tx.NamedExec(queryString, &user)
 	if err != nil {
 		log.Fatal(err)
 	}

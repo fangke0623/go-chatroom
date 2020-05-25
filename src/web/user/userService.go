@@ -80,8 +80,8 @@ func Edit(param []byte) (interface{}, exception.Error) {
 		e = exception.UserNotExist
 	}
 
-	user.Id = util.GenerateUUID()
-	user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
+	user.Id = dbUser.Id
+	user.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 	UpdateUserById(user)
 	e.ErrorMsg = "修改成功"
 

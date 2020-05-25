@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"wechat/src/common/cookie"
 	"wechat/src/common/exception"
+	"wechat/src/common/file"
 	"wechat/src/web/discuss"
 	"wechat/src/web/discussMan"
 	"wechat/src/web/discussMsg"
@@ -33,7 +33,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		break
 	case "/user/login":
 		result, e = user.Login(param)
-		cookie.SetCookie(writer, result)
+		//cookie.SetCookie(writer, result)
 		break
 	case "/user/edit":
 		result, e = user.Edit(param)
@@ -61,7 +61,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		result, e = discussMan.AddDiscussMan(param)
 		break
 	case "/discussMan/update":
-		result, e = discussMan.AddDiscussMan(param)
+		result, e = discussMan.EditDiscussMan(param)
 		break
 
 	//discussMsg
@@ -71,6 +71,9 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	case "/discussMsg/add":
 		result, e = discussMsg.AddDiscussMsg(param)
 		break
+	//file
+	case "/upload":
+		file.Upload(writer, request)
 	}
 	writerJson(writer, result, e)
 }

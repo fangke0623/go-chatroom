@@ -29,3 +29,15 @@ func AddDiscussMan(param []byte) (interface{}, exception.Error) {
 
 	return []byte(result), e
 }
+func EditDiscussMan(param []byte) (interface{}, exception.Error) {
+	discussMan := DiscussMan{}
+	result := ""
+	e := exception.Error{}
+	util.HandleParamsToStruct(param, &discussMan)
+
+	discussMan.UpdateDate = time.Now().Format("2006-01-02 15:04:05")
+	UpdateDiscussMan(discussMan)
+	result = "修改成功"
+
+	return []byte(result), e
+}
