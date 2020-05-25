@@ -36,3 +36,40 @@ func SelectDiscussList(form Form) []Discuss {
 	}
 	return discuss
 }
+func GetDiscussById(discussId string) Discuss {
+	var discuss Discuss
+	mysql := config.Mysql
+	queryString := "select * from d_discuss where status = 1" + " and discuss_id = \"" + discussId + "\" limit 1"
+	err := mysql.Get(&discuss, queryString)
+	if err != nil {
+		log.Println(err)
+	}
+	return discuss
+}
+func UpdateDiscuss(discuss Discuss) {
+	mysql := config.Mysql
+	tx := mysql.MustBegin()
+	queryString := "update d_discuss set "
+	if discuss.DiscussTitle != "" {
+		queryString += "discuss_title=:discuss_title,"
+	}
+	if discuss.VisibleType != "" {
+		queryString += "visible_type=:visible_type,"
+	}
+	if discuss.Status != "" {
+		queryString += "status=:status,"
+	}
+	queryString += "modify_time=:modify_time where discuss_id=:discuss_id"
+	result, err := tx.NamedExec(queryString, &discuss)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = tx.Commit()
+	if result != nil {
+		log.Println(result)
+	}
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}

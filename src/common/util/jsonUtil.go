@@ -11,7 +11,7 @@ func MapToStruct(m map[string]interface{}, output interface{}) {
 }
 func HandleParamsToStruct(param []byte, object interface{}) {
 
-	var src map[string][]string
+	var src map[string][]interface{}
 	_ = json.Unmarshal(param, &src)
 
 	var dest map[string]interface{}

@@ -36,15 +36,15 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		//cookie.SetCookie(writer, result)
 		break
 	case "/user/edit":
-		result, e = user.Edit(param)
+		result, e = user.EditUser(param)
 		break
 
 	//discuss
 	case "/discuss/add":
 		result, e = discuss.AddDiscuss(param)
 		break
-	case "/discuss/update":
-		result, e = discuss.UpdateDiscuss(param)
+	case "/discuss/edit":
+		result, e = discuss.EditDiscuss(param)
 		break
 	case "/discuss/delete":
 		result, e = discuss.DeleteDiscuss(param)
@@ -52,15 +52,15 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	case "/discuss/list":
 		result, e = discuss.FindDiscussList(param)
 		break
-	//discussMan
 
+	//discussMan
 	case "/discussMan/list":
 		result, e = discussMan.FindDiscussManList(param)
 		break
 	case "/discussMan/add":
 		result, e = discussMan.AddDiscussMan(param)
 		break
-	case "/discussMan/update":
+	case "/discussMan/edit":
 		result, e = discussMan.EditDiscussMan(param)
 		break
 

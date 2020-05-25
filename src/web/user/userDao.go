@@ -48,7 +48,7 @@ func SaveUser(user User) {
 func GetUserById(id string) User {
 	var user = User{}
 	mysql := config.Mysql
-	queryString := "select * from f_user where id = \"" + id + "\""
+	queryString := "select * from f_user where id = \"" + id + "\" limit 1"
 	err := mysql.Get(&user, queryString)
 	if err != nil {
 		log.Println(err)

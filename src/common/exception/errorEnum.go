@@ -9,7 +9,7 @@ var (
 	UserNameIsExist        = Error{13, "用户名已存在"}
 
 	//discuss
-
+	DiscussNotExist = Error{22, "聊天室不存在"}
 	//discussMan
 
 	//discussMsg

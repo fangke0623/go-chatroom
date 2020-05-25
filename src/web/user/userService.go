@@ -71,7 +71,7 @@ func Login(param []byte) (User, exception.Error) {
 	return User{}, e
 
 }
-func Edit(param []byte) (interface{}, exception.Error) {
+func EditUser(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	user := User{}
 	util.HandleParamsToStruct(param, &user)
