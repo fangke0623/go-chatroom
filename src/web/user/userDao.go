@@ -32,7 +32,7 @@ func GetUserByUsername(username string) User {
 func SaveUser(user User) {
 	mysql := config.Mysql
 	tx := mysql.MustBegin()
-	result, err := tx.NamedExec("insert into f_user values (:id,:email,:user_name,:password,:create_time,:nickname,:mobile)", &user)
+	result, err := tx.NamedExec("insert into f_user values (:id,:email,:user_name,:password,:create_time,:modify_time,:nickname,:mobile)", &user)
 	if err != nil {
 		log.Println(err)
 	}

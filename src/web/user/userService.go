@@ -46,6 +46,7 @@ func RegisterUser(param []byte) ([]byte, exception.Error) {
 	if strings.Compare(user.Password, user.RePassword) == 1 {
 		user.Id = util.GenerateUUID()
 		user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
+		user.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 		SaveUser(user)
 		e.ErrorMsg = "注册成功"
 	} else {
