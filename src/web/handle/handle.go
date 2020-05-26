@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"wechat/src/common/exception"
-	"wechat/src/common/file"
+	"wechat/src/common/fileHandle"
 	"wechat/src/web/discuss"
 	"wechat/src/web/discussMan"
 	"wechat/src/web/discussMsg"
@@ -76,9 +76,11 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	case "/discussMsg/add":
 		result, e = discussMsg.AddDiscussMsg(param)
 		break
-	//file
-	case "/upload":
-		file.Upload(writer, request)
+	//fileHandle
+	case "/uploadBase64":
+		fileHandle.UploadBase64(param)
+		break
+
 	}
 	writerJson(writer, result, e)
 }
