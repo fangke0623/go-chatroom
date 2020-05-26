@@ -1,10 +1,10 @@
 package discussMan
 
 type Form struct {
-	ManId     int    `json:"manId" db:"man_id"`
-	DiscussId int    `json:"discussId" db:"discuss_id"`
-	MemberId  string `json:"memberId" db:"member_id"`
-	ManType   byte   `json:"manType" db:"man_type"`
-	Remind    byte   `json:"remind" db:"remind"`
-	Status    byte   `json:"status" db:"status"`
+	ManId     string `json:"manId" db:"man_id"`
+	DiscussId string `json:"discussId" db:"discuss_id"`
+	UserId    string `json:"userId" db:"user_id"`
+	ManType   string `json:"manType" db:"man_type"`
+	Remind    string `json:"remind" db:"remind"`
+	Status    string `json:"status" db:"status"`
 }

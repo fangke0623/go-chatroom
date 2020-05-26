@@ -1,7 +1,12 @@
 package discuss
 
 type Form struct {
-	DiscussId    int    `json:"discussId" `
-	DiscussTitle string `json:"discussTitle" `
-	UserId       string `json:"userId" `
+	DiscussId    string `json:"discussId"`
+	DiscussTitle string `json:"discussTitle"`
+	UserId       string `json:"userId" db:"user_id"`
+	VisibleType  string `json:"visibleType"`
+	Status       string `json:"status"`
+	CreateTime   string `json:"createTime"`
+	ModifyTime   string `json:"modifyTime"`
+	ModifyId     string `json:"modifyId"`
 }

@@ -1,6 +1,7 @@
 package discuss
 
 import (
+	"strconv"
 	"time"
 	"wechat/src/common/enum"
 	"wechat/src/common/exception"
@@ -9,11 +10,11 @@ import (
 
 func AddDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
-	discuss := Discuss{}
+	form := Form{}
 	result := ""
 
-	util.HandleParamsToStruct(param, &discuss)
-
+	util.HandleParamsToStruct(param, &form)
+	discuss := formToStruct(form)
 	discuss.Status = enum.Normal
 	discuss.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	discuss.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
@@ -22,12 +23,21 @@ func AddDiscuss(param []byte) (interface{}, exception.Error) {
 
 	return []byte(result), e
 }
+func formToStruct(form Form) Discuss {
+	discuss := Discuss{}
+	discuss.DiscussId, _ = strconv.ParseInt(form.DiscussId, 10, 64)
+	discuss.DiscussTitle = form.DiscussTitle
+	discuss.UserId = form.UserId
+	discuss.VisibleType = form.VisibleType
+	return discuss
+}
 func EditDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
-	discuss := Discuss{}
+	form := Form{}
 	result := ""
 
-	util.HandleParamsToStruct(param, &discuss)
+	util.HandleParamsToStruct(param, &form)
+	discuss := formToStruct(form)
 	dbDiscuss := GetDiscussById(discuss.DiscussId)
 	if dbDiscuss.DiscussTitle == "" {
 		e = exception.DiscussNotExist
@@ -55,6 +65,16 @@ func DeleteDiscuss(param []byte) (interface{}, exception.Error) {
 	e.ErrorMsg = "删除成功"
 
 	return []byte(result), e
+}
+func GetDiscussDetail(param []byte) (interface{}, exception.Error) {
+
+	form := Form{}
+	e := exception.Error{}
+	util.HandleParamsToStruct(param, &form)
+	discussId, _ := strconv.ParseInt(form.DiscussId, 10, 64)
+	discuss := GetDiscussById(discussId)
+
+	return discuss, e
 }
 func FindDiscussList(param []byte) (interface{}, exception.Error) {
 

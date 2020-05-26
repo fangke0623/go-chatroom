@@ -11,7 +11,7 @@ var (
 	//discuss
 	DiscussNotExist = Error{22, "聊天室不存在"}
 	//discussMan
-
+	DiscussManNotExist = Error{32, "人员不存在"}
 	//discussMsg
 
 )

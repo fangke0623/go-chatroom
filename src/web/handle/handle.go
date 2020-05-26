@@ -52,7 +52,9 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	case "/discuss/list":
 		result, e = discuss.FindDiscussList(param)
 		break
-
+	case "/discuss/detail":
+		result, e = discuss.GetDiscussDetail(param)
+		break
 	//discussMan
 	case "/discussMan/list":
 		result, e = discussMan.FindDiscussManList(param)
@@ -62,6 +64,9 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		break
 	case "/discussMan/edit":
 		result, e = discussMan.EditDiscussMan(param)
+		break
+	case "/discussMan/delete":
+		result, e = discussMan.DeleteDiscussMan(param)
 		break
 
 	//discussMsg

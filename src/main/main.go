@@ -11,6 +11,8 @@ func main() {
 	http.HandleFunc("/", handle.ResponseHandle)
 	config.SqlInit()
 	//config.RedisInit()
-	log.Fatal(http.ListenAndServe(":8090", nil))
-
+	err := http.ListenAndServe(":8090", nil)
+	if err != nil {
+		log.Println(err)
+	}
 }

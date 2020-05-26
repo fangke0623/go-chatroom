@@ -2,13 +2,14 @@ package discuss
 
 import (
 	"log"
+	"strconv"
 	"wechat/src/config"
 )
 
 func SaveDiscuss(discuss Discuss) {
 	mysql := config.Mysql
 	tx := mysql.MustBegin()
-	result, err := tx.NamedExec("insert into d_discuss values (:discuss_id,:discuss_title,:user_id,:visible_type,:status,:create_date,:update_date,:update_id)", &discuss)
+	result, err := tx.NamedExec("insert into d_discuss values (:discuss_id,:discuss_title,:user_id,:visible_type,:status,:create_time,:modify_time,:modify_id)", &discuss)
 	if err != nil {
 		log.Println(err)
 	}
@@ -36,10 +37,10 @@ func SelectDiscussList(form Form) []Discuss {
 	}
 	return discuss
 }
-func GetDiscussById(discussId string) Discuss {
+func GetDiscussById(discussId int64) Discuss {
 	var discuss Discuss
 	mysql := config.Mysql
-	queryString := "select * from d_discuss where status = 1" + " and discuss_id = \"" + discussId + "\" limit 1"
+	queryString := "select * from d_discuss where status = 1" + " and discuss_id = \"" + strconv.FormatInt(discussId, 10) + "\" limit 1"
 	err := mysql.Get(&discuss, queryString)
 	if err != nil {
 		log.Println(err)

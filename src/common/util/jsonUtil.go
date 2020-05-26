@@ -3,11 +3,15 @@ package util
 import (
 	"encoding/json"
 	"github.com/mitchellh/mapstructure"
+	"log"
 )
 
 func MapToStruct(m map[string]interface{}, output interface{}) {
 
-	_ = mapstructure.Decode(m, output)
+	err := mapstructure.Decode(m, output)
+	if err != nil {
+		log.Panicln(err)
+	}
 }
 func HandleParamsToStruct(param []byte, object interface{}) {
 

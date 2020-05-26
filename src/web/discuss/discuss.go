@@ -1,7 +1,7 @@
 package discuss
 
 type Discuss struct {
-	DiscussId    string `json:"discussId" db:"discuss_id"`
+	DiscussId    int64  `json:"discussId" db:"discuss_id"`
 	DiscussTitle string `json:"discussTitle" db:"discuss_title"`
 	UserId       string `json:"userId" db:"user_id"`
 	VisibleType  string `json:"visibleType" db:"visible_type"`
