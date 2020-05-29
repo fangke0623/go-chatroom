@@ -43,7 +43,7 @@ func RegisterUser(param []byte) ([]byte, exception.Error) {
 		e = exception.UserNameIsExist
 		return []byte(result), e
 	}
-	if strings.Compare(user.Password, user.RePassword) == 1 {
+	if strings.Compare(user.Password, user.RePassword) == 0 {
 		user.Id = util.GenerateUUID()
 		user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 		user.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
