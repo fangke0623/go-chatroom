@@ -9,7 +9,7 @@ import (
 
 func main() {
 	//config.LogInit()
-	http.HandleFunc("/", handle.ResponseHandle)
+	go http.HandleFunc("/", handle.ResponseHandle)
 	config.SqlInit()
 	//config.RedisInit()
 	err := http.ListenAndServe(":8090", nil)

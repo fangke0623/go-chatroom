@@ -78,7 +78,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		break
 	//fileHandle
 	case "/uploadBase64":
-		fileHandle.UploadBase64(param)
+		go fileHandle.UploadBase64(param)
 		break
 
 	}
