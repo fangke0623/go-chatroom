@@ -49,20 +49,20 @@ func formToStruct(form Form) Discuss {
 func EditDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	form := Form{}
-	result := ""
 
 	util.HandleParamsToStruct(param, &form)
 	discuss := formToStruct(form)
 	dbDiscuss := GetDiscussById(discuss.DiscussId)
 	if dbDiscuss.DiscussTitle == "" {
 		e = exception.DiscussNotExist
+		return "", e
 	}
 	discuss.DiscussId = dbDiscuss.DiscussId
 	discuss.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 	UpdateDiscuss(discuss)
 	e.ErrorMsg = "修改成功"
 
-	return []byte(result), e
+	return "", e
 }
 func DeleteDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
