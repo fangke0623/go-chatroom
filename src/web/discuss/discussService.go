@@ -6,6 +6,7 @@ import (
 	"wechat/src/common/enum"
 	"wechat/src/common/exception"
 	"wechat/src/common/util"
+	"wechat/src/web/discussMan"
 )
 
 func AddDiscuss(param []byte) (interface{}, exception.Error) {
@@ -16,12 +17,26 @@ func AddDiscuss(param []byte) (interface{}, exception.Error) {
 	util.HandleParamsToStruct(param, &form)
 	discuss := formToStruct(form)
 	discuss.Status = enum.Normal
+	discuss.VisibleType = form.VisibleType
 	discuss.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	discuss.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
-	SaveDiscuss(discuss)
+	discussId := SaveDiscuss(discuss)
+	discuss.DiscussId = discussId
+	saveDiscussManForCreateMan(discuss)
 	e.ErrorMsg = "创建成功"
 
 	return []byte(result), e
+}
+func saveDiscussManForCreateMan(discuss Discuss) {
+	man := discussMan.DiscussMan{}
+	man.UserId = discuss.UserId
+	man.DiscussId = discuss.DiscussId
+	man.ManType = "1"
+	man.Status = enum.Normal
+	man.CreateTime = time.Now().Format("2006-01-02 15:04:05")
+	man.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
+	man.Remind = "1"
+	discussMan.SaveDiscussMan(man)
 }
 func formToStruct(form Form) Discuss {
 	discuss := Discuss{}

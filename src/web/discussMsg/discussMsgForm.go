@@ -7,7 +7,5 @@ type Form struct {
 	MsgContent string `json:"msgContent" db:"msg_content"`
 	MsgType    string `json:"msgType" db:"msg_type"`
 	Remind     string `json:"remind" db:"remind"`
-	Status     string `json:"status" db:"status"`
-	CreateDate string `json:"createDate" db:"create_date"`
-	UpdateDate string `json:"updateDate" db:"update_date"`
+	UserId     string `json:"userId"`
 }

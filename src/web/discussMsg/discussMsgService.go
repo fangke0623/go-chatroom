@@ -5,6 +5,7 @@ import (
 	"wechat/src/common/enum"
 	"wechat/src/common/exception"
 	"wechat/src/common/util"
+	"wechat/src/web/discussMan"
 )
 
 func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {
@@ -17,10 +18,18 @@ func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {
 
 }
 func AddDiscussMsg(param []byte) (interface{}, exception.Error) {
-	discussMsg := DiscussMsg{}
+	form := Form{}
 	result := ""
 	e := exception.Error{}
-	util.HandleParamsToStruct(param, &discussMsg)
+	util.HandleParamsToStruct(param, &form)
+	discussManForm := discussMan.Form{}
+	discussManForm.UserId = form.UserId
+	discussManForm.DiscussId = form.DiscussId
+	man := discussMan.FindDiscussMan(discussManForm)
+	discussMsg := DiscussMsg{}
+	discussMsg.DiscussId = man.DiscussId
+	discussMsg.ManId = man.ManId
+	discussMsg.MsgContent = form.MsgContent
 	discussMsg.Status = enum.Normal
 	discussMsg.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	discussMsg.ModifyTime = time.Now().Format("2006-01-02 15:04:05")

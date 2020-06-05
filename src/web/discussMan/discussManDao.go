@@ -32,7 +32,7 @@ func GetDiscussManById(manId int) DiscussMan {
 	return discussMan
 }
 
-func findDiscussMan(form Form) DiscussMan {
+func FindDiscussMan(form Form) DiscussMan {
 	var discussMan DiscussMan
 	mysql := config.Mysql
 	queryString := "select * from d_discuss_man where status != 3"
@@ -40,9 +40,9 @@ func findDiscussMan(form Form) DiscussMan {
 		queryString += " and discuss_id = " + form.DiscussId
 	}
 	if form.UserId != "" {
-		queryString += " and user_id = " + form.UserId
+		queryString += " and user_id = \"" + form.UserId + "\""
 	}
-	queryString += "limit 1"
+	queryString += " limit 1 "
 	err := mysql.Get(&discussMan, queryString)
 	if err != nil {
 		log.Println(err)

@@ -6,7 +6,7 @@ import (
 	"wechat/src/config"
 )
 
-func SaveDiscuss(discuss Discuss) {
+func SaveDiscuss(discuss Discuss) int64 {
 	mysql := config.Mysql
 	tx := mysql.MustBegin()
 	result, err := tx.NamedExec("insert into d_discuss values (:discuss_id,:discuss_title,:user_id,:visible_type,:status,:create_time,:modify_time,:modify_id)", &discuss)
@@ -20,6 +20,8 @@ func SaveDiscuss(discuss Discuss) {
 	if err != nil {
 		log.Println(err)
 	}
+	discussId, _ := result.LastInsertId()
+	return discussId
 }
 func SelectDiscussList(form Form) []Discuss {
 	var discuss []Discuss
