@@ -79,6 +79,7 @@ func EditUser(param []byte) (interface{}, exception.Error) {
 	dbUser := GetUserById(user.Id)
 	if dbUser.UserName == "" {
 		e = exception.UserNotExist
+		return "", e
 	}
 
 	user.Id = dbUser.Id
@@ -86,5 +87,5 @@ func EditUser(param []byte) (interface{}, exception.Error) {
 	UpdateUserById(user)
 	e.ErrorMsg = "修改成功"
 
-	return "", e
+	return GetUserById(user.Id), e
 }

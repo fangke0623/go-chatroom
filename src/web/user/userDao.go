@@ -68,6 +68,9 @@ func UpdateUserById(user User) {
 	if user.Mobile != "" {
 		queryString += "mobile=:mobile,"
 	}
+	if user.Email != "" {
+		queryString += "email=:email,"
+	}
 	queryString += "modify_time=:modify_time where id=:id"
 	result, err := tx.NamedExec(queryString, &user)
 	if err != nil {
