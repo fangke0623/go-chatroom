@@ -1,5 +1,7 @@
 package discussMsg
 
+import "wechat/src/common/query"
+
 type Form struct {
 	MsgId      string `json:"msgId" db:"msg_id"`
 	ManId      string `json:"manId" db:"man_id"`
@@ -8,4 +10,5 @@ type Form struct {
 	MsgType    string `json:"msgType" db:"msg_type"`
 	Remind     string `json:"remind" db:"remind"`
 	UserId     string `json:"userId"`
+	query.Page
 }

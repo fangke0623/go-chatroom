@@ -1,5 +1,7 @@
 package user
 
+import "wechat/src/common/query"
+
 type Form struct {
 	Id        string `json:"id"`
 	Name      string `json:"name"`
@@ -7,4 +9,5 @@ type Form struct {
 	Username  string `json:"username"`
 	NickName  string `json:"nickName"`
 	CheckCode string `json:"checkCode"`
+	query.Page
 }

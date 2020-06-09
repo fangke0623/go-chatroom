@@ -1,5 +1,7 @@
 package discuss
 
+import "wechat/src/common/query"
+
 type Form struct {
 	DiscussId    string `json:"discussId"`
 	DiscussTitle string `json:"discussTitle"`
@@ -9,4 +11,5 @@ type Form struct {
 	CreateTime   string `json:"createTime"`
 	ModifyTime   string `json:"modifyTime"`
 	ModifyId     string `json:"modifyId"`
+	query.Page
 }
