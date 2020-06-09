@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"wechat/src/config"
-	"wechat/src/web/user"
+	"wechat/src/web/chat/user"
 )
 
 func SetCookie(w http.ResponseWriter, param interface{}) {

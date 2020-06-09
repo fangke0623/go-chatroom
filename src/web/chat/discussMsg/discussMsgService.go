@@ -5,7 +5,7 @@ import (
 	"wechat/src/common/enum"
 	"wechat/src/common/exception"
 	"wechat/src/common/util"
-	"wechat/src/web/discussMan"
+	"wechat/src/web/chat/discussMan"
 )
 
 func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {

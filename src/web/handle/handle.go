@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"wechat/src/common/exception"
 	"wechat/src/common/fileHandle"
-	"wechat/src/web/discuss"
-	"wechat/src/web/discussMan"
-	"wechat/src/web/discussMsg"
-	"wechat/src/web/user"
+	"wechat/src/web/chat/discuss"
+	"wechat/src/web/chat/discussMan"
+	"wechat/src/web/chat/discussMsg"
+	"wechat/src/web/chat/user"
 )
 
 func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
@@ -78,7 +78,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		break
 	//fileHandle
 	case "/uploadBase64":
-		go fileHandle.UploadBase64(param)
+		fileHandle.UploadBase64(param)
 		break
 
 	}

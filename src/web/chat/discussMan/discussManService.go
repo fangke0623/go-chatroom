@@ -23,6 +23,8 @@ func AddDiscussMan(param []byte) (interface{}, exception.Error) {
 	//e := exception.Error{}
 	util.HandleParamsToStruct(param, &discussMan)
 	discussMan.Status = enum.NormalMan
+	discussMan.ManType = "3"
+	discussMan.Remind = "1"
 	discussMan.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	discussMan.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 	SaveDiscussMan(discussMan)
