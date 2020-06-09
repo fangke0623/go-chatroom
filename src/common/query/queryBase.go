@@ -1,6 +1,10 @@
 package query
 
 type Page struct {
-	PageSize    string `json:"pageSize"`
-	CurrentPage string `json:"currentPage"`
+	PageSize    int `json:"pageSize"`
+	CurrentPage int `json:"currentPage"`
+}
+
+func GetStartRow(page Page) int {
+	return page.PageSize + (page.CurrentPage - 1)
 }
