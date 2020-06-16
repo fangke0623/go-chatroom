@@ -6,6 +6,7 @@ import (
 	"wechat/src/common/exception"
 	"wechat/src/common/util"
 	"wechat/src/web/chat/discussMan"
+	"wechat/src/web/chat/user"
 )
 
 func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {
@@ -13,6 +14,12 @@ func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	list := SelectDiscussMsgList(form)
+	for key, msg := range list {
+		man := discussMan.GetDiscussManById(msg.ManId)
+		u := user.GetUserById(man.UserId)
+		list[key].UserId = u.Id
+		list[key].Nickname = u.Nickname
+	}
 
 	return list, e
 

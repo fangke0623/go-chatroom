@@ -2,6 +2,7 @@ package discussMan
 
 import (
 	"log"
+	"strconv"
 	"wechat/src/config"
 )
 
@@ -11,6 +12,10 @@ func SelectDiscussManList(form Form) []DiscussMan {
 	queryString := "select * from d_discuss_man where status != 3 "
 	if form.DiscussId != "" {
 		queryString += "and discuss_id=" + form.DiscussId
+
+	}
+	if form.UserId != "" {
+		queryString += "and user_id=" + "\"" + form.UserId + "\""
 
 	}
 	err := mysql.Select(&list, queryString)
@@ -23,7 +28,7 @@ func SelectDiscussManList(form Form) []DiscussMan {
 func GetDiscussManById(manId int) DiscussMan {
 	var discussMan DiscussMan
 	mysql := config.Mysql
-	queryString := "select * from d_discuss_man where man_id=" + string(manId) + "and status != 3 limit 1"
+	queryString := "select * from d_discuss_man where man_id=" + strconv.Itoa(manId) + " and status != 3 limit 1"
 
 	err := mysql.Get(&discussMan, queryString)
 	if err != nil {

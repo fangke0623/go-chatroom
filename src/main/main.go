@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	//config.LogInit()
+	config.LogInit()
 	http.HandleFunc("/", handle.ResponseHandle)
 	config.SqlInit()
 	//config.RedisInit()

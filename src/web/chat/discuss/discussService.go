@@ -96,7 +96,14 @@ func FindDiscussList(param []byte) (interface{}, exception.Error) {
 	form := Form{}
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
-	list := SelectDiscussList(form)
+	discussManForm := discussMan.Form{}
+	discussManForm.UserId = form.UserId
+	manList := discussMan.SelectDiscussManList(discussManForm)
+	list := make([]Discuss, len(manList))
+	for key, man := range manList {
+		discuss := GetDiscussById(man.DiscussId)
+		list[key] = discuss
+	}
 
 	return list, e
 }

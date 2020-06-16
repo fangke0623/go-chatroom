@@ -2,13 +2,13 @@ package util
 
 import (
 	"encoding/json"
-	"github.com/mitchellh/mapstructure"
 	"log"
 )
 
 func MapToStruct(m map[string]interface{}, output interface{}) {
 
-	err := mapstructure.Decode(m, output)
+	result, err := json.MarshalIndent(m, "", "    ")
+	err = json.Unmarshal(result, &output)
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -16,7 +16,10 @@ func MapToStruct(m map[string]interface{}, output interface{}) {
 func HandleParamsToStruct(param []byte, object interface{}) {
 
 	var src map[string][]interface{}
-	_ = json.Unmarshal(param, &src)
+	err := json.Unmarshal(param, &src)
+	if err != nil {
+		log.Println(err)
+	}
 
 	var dest map[string]interface{}
 	m := src

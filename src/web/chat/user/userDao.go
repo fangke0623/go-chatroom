@@ -2,6 +2,7 @@ package user
 
 import (
 	"log"
+	"wechat/src/common/query"
 	"wechat/src/config"
 )
 
@@ -11,6 +12,10 @@ func SelectUserList(form Form) []User {
 	queryString := "select * from f_user"
 	if form.Id != "" {
 		queryString += " where id = " + form.Id
+	}
+	queryString += " order by modify_time"
+	if form.PageSize != "" && form.CurrentPage != "" {
+		queryString += " limit " + query.GetStartRow(form.Page) + " , " + form.PageSize
 	}
 	err := mysql.Select(&userList, queryString)
 	if err != nil {
