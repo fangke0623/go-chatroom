@@ -8,7 +8,7 @@ import (
 var RedisConn redis.Conn
 
 func RedisInit() {
-	c, err := redis.Dial("tcp", "127.0.0.1:6379")
+	c, err := redis.Dial("tcp", "175.24.41.128:6379")
 	if err != nil {
 		log.Fatal("redis connect error", err)
 	} else {

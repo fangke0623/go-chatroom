@@ -10,7 +10,7 @@ import (
 func init() {
 	//config.LogInit()
 	config.SqlInit()
-	//config.RedisInit()
+	config.RedisInit()
 
 }
 func main() {

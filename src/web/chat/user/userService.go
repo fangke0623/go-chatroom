@@ -58,7 +58,7 @@ func (form Form) RegisterUser(param []byte) (interface{}, exception.Error) {
 		user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 		user.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 		SaveUser(user)
-		e.ErrorMsg = "注册成功"
+		e = exception.Success
 	} else {
 		e = exception.PassWordIsInconsistent
 		return result, e
@@ -88,7 +88,7 @@ func (form Form) EditUser(param []byte) (interface{}, exception.Error) {
 	dbUser := GetUserById(user.Id)
 	if dbUser.UserName == "" {
 		e = exception.UserNotExist
-		return "", e
+		return user, e
 	}
 
 	user.Id = dbUser.Id
