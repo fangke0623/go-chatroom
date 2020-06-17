@@ -20,6 +20,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	}
 	var result interface{}
 	var e exception.Error
+	var discussForm discuss.Form
 	switch request.URL.Path {
 	//user
 	case "/user/list":
@@ -41,19 +42,19 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 
 	//discuss
 	case "/discuss/add":
-		result, e = discuss.AddDiscuss(param)
+		result, e = discussForm.AddDiscuss(param)
 		break
 	case "/discuss/edit":
-		result, e = discuss.EditDiscuss(param)
+		result, e = discussForm.EditDiscuss(param)
 		break
 	case "/discuss/delete":
-		result, e = discuss.DeleteDiscuss(param)
+		result, e = discussForm.DeleteDiscuss(param)
 		break
 	case "/discuss/list":
-		result, e = discuss.FindDiscussList(param)
+		result, e = discussForm.FindDiscussList(param)
 		break
 	case "/discuss/detail":
-		result, e = discuss.GetDiscussDetail(param)
+		result, e = discussForm.GetDiscussDetail(param)
 		break
 	//discussMan
 	case "/discussMan/list":

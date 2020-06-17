@@ -7,11 +7,16 @@ import (
 	"wechat/src/web/handle"
 )
 
-func main() {
-	config.LogInit()
-	http.HandleFunc("/", handle.ResponseHandle)
+func init() {
+	//config.LogInit()
 	config.SqlInit()
 	//config.RedisInit()
+
+}
+func main() {
+
+	http.HandleFunc("/", handle.ResponseHandle)
+
 	err := http.ListenAndServe(":8090", nil)
 	if err != nil {
 		log.Println(err)

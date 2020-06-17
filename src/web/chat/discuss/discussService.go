@@ -9,9 +9,20 @@ import (
 	"wechat/src/web/chat/discussMan"
 )
 
-func AddDiscuss(param []byte) (interface{}, exception.Error) {
+type Service interface {
+	AddDiscuss(param []byte) (interface{}, exception.Error)
+
+	EditDiscuss(param []byte) (interface{}, exception.Error)
+
+	DeleteDiscuss(param []byte) (interface{}, exception.Error)
+
+	GetDiscussDetail(param []byte) (interface{}, exception.Error)
+
+	FindDiscussList(param []byte) (interface{}, exception.Error)
+}
+
+func (form Form) AddDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
-	form := Form{}
 	result := ""
 
 	util.HandleParamsToStruct(param, &form)
@@ -46,9 +57,8 @@ func formToStruct(form Form) Discuss {
 	discuss.VisibleType = form.VisibleType
 	return discuss
 }
-func EditDiscuss(param []byte) (interface{}, exception.Error) {
+func (form Form) EditDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
-	form := Form{}
 
 	util.HandleParamsToStruct(param, &form)
 	discuss := formToStruct(form)
@@ -64,14 +74,14 @@ func EditDiscuss(param []byte) (interface{}, exception.Error) {
 
 	return "", e
 }
-func DeleteDiscuss(param []byte) (interface{}, exception.Error) {
+func (form Form) DeleteDiscuss(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
-	discuss := Discuss{}
 	result := ""
 
-	util.HandleParamsToStruct(param, &discuss)
-	dbDiscuss := GetDiscussById(discuss.DiscussId)
-	if dbDiscuss.DiscussTitle == "" {
+	util.HandleParamsToStruct(param, &form)
+	discussId, _ := strconv.ParseInt(form.DiscussId, 10, 64)
+	discuss := GetDiscussById(discussId)
+	if discuss.DiscussTitle == "" {
 		e = exception.DiscussNotExist
 	}
 	discuss.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
@@ -81,9 +91,8 @@ func DeleteDiscuss(param []byte) (interface{}, exception.Error) {
 
 	return []byte(result), e
 }
-func GetDiscussDetail(param []byte) (interface{}, exception.Error) {
+func (form Form) GetDiscussDetail(param []byte) (interface{}, exception.Error) {
 
-	form := Form{}
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	discussId, _ := strconv.ParseInt(form.DiscussId, 10, 64)
@@ -91,9 +100,8 @@ func GetDiscussDetail(param []byte) (interface{}, exception.Error) {
 
 	return discuss, e
 }
-func FindDiscussList(param []byte) (interface{}, exception.Error) {
+func (form Form) FindDiscussList(param []byte) (interface{}, exception.Error) {
 
-	form := Form{}
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	discussManForm := discussMan.Form{}
