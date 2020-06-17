@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"regexp"
+	"wechat/src/common/enum"
 	"wechat/src/common/exception"
 	"wechat/src/common/fileHandle"
 	"wechat/src/web/chat/discuss"
@@ -19,68 +21,61 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		log.Print("form转换json异常：", err)
 	}
 	var result interface{}
+
 	var e exception.Error
+
 	var discussForm discuss.Form
-	switch request.URL.Path {
+
 	//user
-	case "/user/list":
-		result, e = user.FindUserList(param)
-		break
-	case "/user/detail":
-		result, e = user.DetailUser(param)
-		break
-	case "/user/register":
-		result, e = user.RegisterUser(param)
-		break
-	case "/user/login":
-		result, e = user.Login(param)
-		//cookie.SetCookie(writer, result)
-		break
-	case "/user/edit":
-		result, e = user.EditUser(param)
-		break
+	flat, _ := regexp.MatchString(enum.UserService, request.URL.Path)
+	if flat {
+		result, e = user.Handle(request.URL.Path, param)
+	} else {
+		switch request.URL.Path {
 
-	//discuss
-	case "/discuss/add":
-		result, e = discussForm.AddDiscuss(param)
-		break
-	case "/discuss/edit":
-		result, e = discussForm.EditDiscuss(param)
-		break
-	case "/discuss/delete":
-		result, e = discussForm.DeleteDiscuss(param)
-		break
-	case "/discuss/list":
-		result, e = discussForm.FindDiscussList(param)
-		break
-	case "/discuss/detail":
-		result, e = discussForm.GetDiscussDetail(param)
-		break
-	//discussMan
-	case "/discussMan/list":
-		result, e = discussMan.FindDiscussManList(param)
-		break
-	case "/discussMan/add":
-		result, e = discussMan.AddDiscussMan(param)
-		break
-	case "/discussMan/edit":
-		result, e = discussMan.EditDiscussMan(param)
-		break
-	case "/discussMan/delete":
-		result, e = discussMan.DeleteDiscussMan(param)
-		break
+		//discuss
+		case "/discuss/add":
+			result, e = discussForm.AddDiscuss(param)
+			break
+		case "/discuss/edit":
+			result, e = discussForm.EditDiscuss(param)
+			break
+		case "/discuss/delete":
+			result, e = discussForm.DeleteDiscuss(param)
+			break
+		case "/discuss/list":
+			result, e = discussForm.FindDiscussList(param)
+			break
+		case "/discuss/detail":
+			result, e = discussForm.GetDiscussDetail(param)
+			break
+		//discussMan
+		case "/discussMan/list":
+			result, e = discussMan.FindDiscussManList(param)
+			break
+		case "/discussMan/add":
+			result, e = discussMan.AddDiscussMan(param)
+			break
+		case "/discussMan/edit":
+			result, e = discussMan.EditDiscussMan(param)
+			break
+		case "/discussMan/delete":
+			result, e = discussMan.DeleteDiscussMan(param)
+			break
 
-	//discussMsg
-	case "/discussMsg/list":
-		result, e = discussMsg.FindDiscussMsgList(param)
-		break
-	case "/discussMsg/add":
-		result, e = discussMsg.AddDiscussMsg(param)
-		break
-	//fileHandle
-	case "/uploadBase64":
-		fileHandle.UploadBase64(param)
-		break
+		//discussMsg
+		case "/discussMsg/list":
+			result, e = discussMsg.FindDiscussMsgList(param)
+			break
+		case "/discussMsg/add":
+			result, e = discussMsg.AddDiscussMsg(param)
+			break
+		//fileHandle
+		case "/uploadBase64":
+			fileHandle.UploadBase64(param)
+			break
+
+		}
 
 	}
 	writerJson(writer, result, e)

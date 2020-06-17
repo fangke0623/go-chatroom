@@ -9,18 +9,28 @@ import (
 	"wechat/src/common/util"
 )
 
-func FindUserList(param []byte) (interface{}, exception.Error) {
+type Service interface {
+	FindUserList(param []byte) (interface{}, exception.Error)
+
+	DetailUser(param []byte) ([]byte, exception.Error)
+
+	RegisterUser(param []byte) ([]byte, exception.Error)
+
+	Login(param []byte) (User, exception.Error)
+
+	EditUser(param []byte) (interface{}, exception.Error)
+}
+
+func (form Form) FindUserList(param []byte) (interface{}, exception.Error) {
 
 	e := exception.Error{}
-	form := Form{}
 	util.HandleParamsToStruct(param, &form)
 
 	list := SelectUserList(form)
 	return list, e
 }
-func DetailUser(param []byte) ([]byte, exception.Error) {
+func (form Form) DetailUser(param []byte) ([]byte, exception.Error) {
 
-	form := Form{}
 	e := exception.Error{}
 
 	util.HandleParamsToStruct(param, &form)
@@ -32,7 +42,7 @@ func DetailUser(param []byte) ([]byte, exception.Error) {
 	}
 	return jsons, e
 }
-func RegisterUser(param []byte) ([]byte, exception.Error) {
+func (form Form) RegisterUser(param []byte) ([]byte, exception.Error) {
 
 	user := User{}
 	result := ""
@@ -55,9 +65,8 @@ func RegisterUser(param []byte) ([]byte, exception.Error) {
 	}
 	return []byte(result), e
 }
-func Login(param []byte) (User, exception.Error) {
+func (form Form) Login(param []byte) (User, exception.Error) {
 	e := exception.Error{}
-	form := Form{}
 	util.HandleParamsToStruct(param, &form)
 	user := GetUserByUsername(form.Username)
 	if user.Password != "" {
@@ -72,7 +81,7 @@ func Login(param []byte) (User, exception.Error) {
 	return User{}, e
 
 }
-func EditUser(param []byte) (interface{}, exception.Error) {
+func (form Form) EditUser(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	user := User{}
 	util.HandleParamsToStruct(param, &user)
