@@ -12,11 +12,11 @@ import (
 type Service interface {
 	FindUserList(param []byte) (interface{}, exception.Error)
 
-	DetailUser(param []byte) ([]byte, exception.Error)
+	DetailUser(param []byte) (interface{}, exception.Error)
 
-	RegisterUser(param []byte) ([]byte, exception.Error)
+	RegisterUser(param []byte) (interface{}, exception.Error)
 
-	Login(param []byte) (User, exception.Error)
+	Login(param []byte) (interface{}, exception.Error)
 
 	EditUser(param []byte) (interface{}, exception.Error)
 }
@@ -29,7 +29,7 @@ func (form Form) FindUserList(param []byte) (interface{}, exception.Error) {
 	list := SelectUserList(form)
 	return list, e
 }
-func (form Form) DetailUser(param []byte) ([]byte, exception.Error) {
+func (form Form) DetailUser(param []byte) (interface{}, exception.Error) {
 
 	e := exception.Error{}
 
@@ -42,7 +42,7 @@ func (form Form) DetailUser(param []byte) ([]byte, exception.Error) {
 	}
 	return jsons, e
 }
-func (form Form) RegisterUser(param []byte) ([]byte, exception.Error) {
+func (form Form) RegisterUser(param []byte) (interface{}, exception.Error) {
 
 	user := User{}
 	result := ""
@@ -51,7 +51,7 @@ func (form Form) RegisterUser(param []byte) ([]byte, exception.Error) {
 	dbUser := GetUserByUsername(user.UserName)
 	if dbUser.UserName != "" {
 		e = exception.UserNameIsExist
-		return []byte(result), e
+		return result, e
 	}
 	if strings.Compare(user.Password, user.RePassword) == 0 {
 		user.Id = util.GenerateUUID()
@@ -61,11 +61,11 @@ func (form Form) RegisterUser(param []byte) ([]byte, exception.Error) {
 		e.ErrorMsg = "注册成功"
 	} else {
 		e = exception.PassWordIsInconsistent
-		return []byte(result), e
+		return result, e
 	}
-	return []byte(result), e
+	return result, e
 }
-func (form Form) Login(param []byte) (User, exception.Error) {
+func (form Form) Login(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
 	user := GetUserByUsername(form.Username)
@@ -78,7 +78,7 @@ func (form Form) Login(param []byte) (User, exception.Error) {
 	} else {
 		e = exception.UserNotExist
 	}
-	return User{}, e
+	return user, e
 
 }
 func (form Form) EditUser(param []byte) (interface{}, exception.Error) {
