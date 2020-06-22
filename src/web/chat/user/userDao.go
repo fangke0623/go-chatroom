@@ -65,6 +65,7 @@ func GetUserById(id string) User {
 		if err != nil {
 			log.Println(err)
 		}
+		jsons, _ = json.Marshal(user)
 		config.DoSet(enum.UserCache+user.Id, jsons)
 		config.DoExpire(enum.UserCache+user.Id, 7*24*3600)
 	} else {
