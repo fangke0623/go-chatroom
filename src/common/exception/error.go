@@ -6,8 +6,11 @@ type Error struct {
 }
 
 var (
+	// common
+	Success   = Error{00, "请求成功"}
+	ParamMiss = Error{01, "必要参数为空"}
+
 	//user
-	Success                = Error{0, "请求成功"}
 	PassWordIsWrong        = Error{10, "密码错误"}
 	PassWordIsInconsistent = Error{11, "两次输入密码不一致"}
 	UserNotExist           = Error{12, "用户不存在"}
@@ -20,5 +23,9 @@ var (
 	DiscussManNotExist = Error{32, "人员不存在"}
 
 	//discussMsg
-
 )
+
+func ThrowException(error Error) (interface{}, Error) {
+
+	return "", error
+}

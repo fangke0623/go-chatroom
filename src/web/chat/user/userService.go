@@ -34,48 +34,43 @@ func (form Form) DetailUser(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 
 	util.HandleParamsToStruct(param, &form)
-
+	if form.Id == "" {
+		return exception.ThrowException(exception.ParamMiss)
+	}
 	user := GetUserById(form.Id)
 
 	return user, e
 }
 func (form Form) RegisterUser(param []byte) (interface{}, exception.Error) {
-
 	user := User{}
-	result := ""
-	e := exception.Error{}
 	util.HandleParamsToStruct(param, &user)
 	dbUser := GetUserByUsername(user.UserName)
 	if dbUser.UserName != "" {
-		e = exception.UserNameIsExist
-		return result, e
+		return exception.ThrowException(exception.UserNameIsExist)
 	}
 	if strings.Compare(user.Password, user.RePassword) == 0 {
 		user.Id = util.GenerateUUID()
 		user.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 		user.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 		SaveUser(user)
-		e = exception.Success
+		return exception.ThrowException(exception.Success)
 	} else {
-		e = exception.PassWordIsInconsistent
-		return result, e
+		return exception.ThrowException(exception.PassWordIsInconsistent)
 	}
-	return result, e
 }
 func (form Form) Login(param []byte) (interface{}, exception.Error) {
-	e := exception.Error{}
+	e := exception.Success
 	util.HandleParamsToStruct(param, &form)
 	user := GetUserByUsername(form.Username)
 	if user.Password != "" {
 		if strings.Compare(user.Password, form.Password) == 0 {
 			return user, e
 		} else {
-			e = exception.PassWordIsWrong
+			return exception.ThrowException(exception.PassWordIsWrong)
 		}
 	} else {
-		e = exception.UserNotExist
+		return exception.ThrowException(exception.UserNotExist)
 	}
-	return user, e
 
 }
 func (form Form) EditUser(param []byte) (interface{}, exception.Error) {
@@ -85,7 +80,7 @@ func (form Form) EditUser(param []byte) (interface{}, exception.Error) {
 	dbUser := GetUserById(user.Id)
 	if dbUser.UserName == "" {
 		e = exception.UserNotExist
-		return user, e
+		return exception.ThrowException(exception.UserNotExist)
 	}
 
 	user.Id = dbUser.Id
