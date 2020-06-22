@@ -1,8 +1,11 @@
 package user
 
 import (
+	"encoding/json"
 	"log"
+	"wechat/src/common/enum"
 	"wechat/src/common/query"
+	"wechat/src/common/util"
 	"wechat/src/config"
 )
 
@@ -52,11 +55,23 @@ func SaveUser(user User) {
 }
 func GetUserById(id string) User {
 	var user = User{}
-	mysql := config.Mysql
-	queryString := "select * from f_user where id = \"" + id + "\" limit 1"
-	err := mysql.Get(&user, queryString)
-	if err != nil {
-		log.Println(err)
+
+	jsons := config.DoGet(enum.UserCache + id)
+
+	if util.IsNil(jsons) {
+		mysql := config.Mysql
+		queryString := "select * from f_user where id = \"" + id + "\" limit 1"
+		err := mysql.Get(&user, queryString)
+		if err != nil {
+			log.Println(err)
+		}
+		config.DoSet(enum.UserCache+user.Id, jsons)
+		config.DoExpire(enum.UserCache+user.Id, 7*24*3600)
+	} else {
+		err := json.Unmarshal(jsons, &user)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 	return user
 }

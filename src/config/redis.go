@@ -8,7 +8,7 @@ import (
 var RedisConn redis.Conn
 
 func RedisInit() {
-	c, err := redis.Dial("tcp", "175.24.41.128:6379")
+	c, err := redis.Dial("tcp", "127.0.0.1:6379")
 	if err != nil {
 		log.Fatal("redis connect error", err)
 	} else {
@@ -26,6 +26,22 @@ func DoSet(key string, value interface{}) {
 	if reply != nil {
 		log.Println("set key reply", reply)
 	}
+}
+func DoGet(key string) []byte {
+
+	reply, err := redis.Bytes(RedisConn.Do("GET", key))
+	if err != nil {
+		log.Println("redis get key value error", err)
+	}
+	return reply
+}
+func DoDel(key string) interface{} {
+
+	reply, err := redis.Bool(RedisConn.Do("Del", key))
+	if err != nil {
+		log.Println("redis del key value error", err)
+	}
+	return reply
 }
 func DoExpire(key string, time int64) {
 

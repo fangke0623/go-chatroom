@@ -1,15 +1,15 @@
 package user
 
 import (
-	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
+	"wechat/src/common/enum"
 	"wechat/src/common/exception"
 	"wechat/src/common/util"
+	"wechat/src/config"
 )
 
-type Service interface {
+type ServiceUser interface {
 	FindUserList(param []byte) (interface{}, exception.Error)
 
 	DetailUser(param []byte) (interface{}, exception.Error)
@@ -36,11 +36,8 @@ func (form Form) DetailUser(param []byte) (interface{}, exception.Error) {
 	util.HandleParamsToStruct(param, &form)
 
 	user := GetUserById(form.Id)
-	jsons, err := json.Marshal(user)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	return jsons, e
+
+	return user, e
 }
 func (form Form) RegisterUser(param []byte) (interface{}, exception.Error) {
 
@@ -95,6 +92,6 @@ func (form Form) EditUser(param []byte) (interface{}, exception.Error) {
 	user.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 	UpdateUserById(user)
 	e.ErrorMsg = "修改成功"
-
+	config.DoDel(enum.UserCache + user.Id)
 	return GetUserById(user.Id), e
 }

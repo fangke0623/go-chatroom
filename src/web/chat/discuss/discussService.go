@@ -9,7 +9,7 @@ import (
 	"wechat/src/web/chat/discussMan"
 )
 
-type Service interface {
+type ServiceDiscuss interface {
 	AddDiscuss(param []byte) (interface{}, exception.Error)
 
 	EditDiscuss(param []byte) (interface{}, exception.Error)
