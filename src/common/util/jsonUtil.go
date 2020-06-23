@@ -10,7 +10,7 @@ func MapToStruct(m map[string]interface{}, output interface{}) {
 	result, err := json.MarshalIndent(m, "", "    ")
 	err = json.Unmarshal(result, &output)
 	if err != nil {
-		log.Panicln(err)
+		log.Panicln(err.Error())
 	}
 }
 func HandleParamsToStruct(param []byte, object interface{}) {
@@ -18,7 +18,7 @@ func HandleParamsToStruct(param []byte, object interface{}) {
 	var src map[string][]interface{}
 	err := json.Unmarshal(param, &src)
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 	}
 
 	var dest map[string]interface{}

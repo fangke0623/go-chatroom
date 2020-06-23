@@ -2,8 +2,8 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"wechat/src/common/fileHandle"
 	"wechat/src/common/util"
 )
@@ -21,12 +21,10 @@ func (c Conf) GetConf() Conf {
 	if util.IsNil(jsonFile) {
 		jsonFile, _ = ioutil.ReadFile("conf.json")
 	}
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+
 	err = json.Unmarshal(jsonFile, &c)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 	}
 	return c
 }

@@ -22,7 +22,7 @@ func SqlInit(conf DbConf) {
 	dataSourceName := conf.User + ":" + conf.Password + "@tcp(" + conf.Host + ")/" + conf.Dbname + "?charset=utf8"
 	db, err := sqlx.Open("mysql", dataSourceName)
 	if err != nil {
-		log.Println("mysql connect error", err)
+		log.Println("mysql connect error", err.Error())
 	} else {
 		log.Println("mysql connect success")
 	}

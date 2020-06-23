@@ -14,7 +14,7 @@ type RedisConf struct {
 func RedisInit(conf RedisConf) {
 	c, err := redis.Dial("tcp", conf.Address)
 	if err != nil {
-		log.Fatal("redis connect error", err)
+		log.Fatal("redis connect error", err.Error())
 	} else {
 		log.Println("redis connect success")
 	}

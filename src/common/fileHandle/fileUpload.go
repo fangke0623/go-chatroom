@@ -59,12 +59,15 @@ func UploadBase64(param []byte) {
 		log.Println(err)
 	}
 	f, err := os.OpenFile("/go/file/"+entity.FileName, os.O_RDWR|os.O_CREATE, os.ModePerm)
+	if f == nil {
+		return
+	}
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 	}
 	defer f.Close()
 	_, err = f.Write(decodeData)
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 	}
 }
