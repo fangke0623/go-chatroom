@@ -7,7 +7,7 @@ import (
 
 func MapToStruct(m map[string]interface{}, output interface{}) {
 
-	result, err := json.MarshalIndent(m, "", "    ")
+	result, err := json.MarshalIndent(m, "", "")
 	err = json.Unmarshal(result, &output)
 	if err != nil {
 		log.Panicln(err.Error())

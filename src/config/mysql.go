@@ -21,6 +21,9 @@ type DbConf struct {
 func SqlInit(conf DbConf) {
 	dataSourceName := conf.User + ":" + conf.Password + "@tcp(" + conf.Host + ")/" + conf.Dbname + "?charset=utf8"
 	db, err := sqlx.Open("mysql", dataSourceName)
+	if db == nil {
+		return
+	}
 	if err != nil {
 		log.Println("mysql connect error", err.Error())
 	} else {
