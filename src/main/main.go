@@ -7,10 +7,13 @@ import (
 	"wechat/src/web/handle"
 )
 
+var c = config.Conf{}
+
 func init() {
-	//config.LogInit()
-	config.SqlInit()
-	config.RedisInit()
+	conf := c.GetConf()
+	config.LogInit(conf.Log)
+	config.SqlInit(conf.Db)
+	config.RedisInit(conf.Redis)
 
 }
 func main() {

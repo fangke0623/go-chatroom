@@ -5,15 +5,21 @@ import (
 	"os"
 )
 
-func LogInit() {
+type LogConf struct {
+	FileName string `json:"fileName"`
+	IsOpen   bool   `json:"isOpen"`
+}
 
-	// 获取日志文件句柄
-	// 已 只写入文件|没有时创建|文件尾部追加 的形式打开这个文件
-	logFile, err := os.OpenFile(`/usr/src/go/log/error.log`, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		panic(err)
+func LogInit(conf LogConf) {
+
+	if conf.IsOpen {
+		// 获取日志文件句柄
+		// 已 只写入文件|没有时创建|文件尾部追加 的形式打开这个文件
+		logFile, err := os.OpenFile(conf.FileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		if err != nil {
+			panic(err)
+		}
+		// 设置存储位置
+		log.SetOutput(logFile)
 	}
-	// 设置存储位置
-	log.SetOutput(logFile)
-
 }

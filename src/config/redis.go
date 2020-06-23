@@ -7,8 +7,12 @@ import (
 
 var RedisConn redis.Conn
 
-func RedisInit() {
-	c, err := redis.Dial("tcp", "127.0.0.1:6379")
+type RedisConf struct {
+	Address string `json:"address"`
+}
+
+func RedisInit(conf RedisConf) {
+	c, err := redis.Dial("tcp", conf.Address)
 	if err != nil {
 		log.Fatal("redis connect error", err)
 	} else {

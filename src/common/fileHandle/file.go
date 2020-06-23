@@ -5,3 +5,6 @@ type FileEntity struct {
 	FileContent string  `json:"fileContent"`
 	FileSize    float32 `json:"fileSize"`
 }
+type FileConf struct {
+	Address string `json:"address"`
+}

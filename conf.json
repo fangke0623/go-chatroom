@@ -1,0 +1,18 @@
+{
+  "db": {
+    "host": "39.108.145.221:3306",
+    "user": "root",
+    "password": ".Fangke123",
+    "dbname": "chatroom"
+  },
+  "redis": {
+    "address": "127.0.0.1:6379"
+  },
+  "log": {
+    "isOpen": false,
+    "fileName": "/go/log/error.log"
+  },
+  "file": {
+    "address": "/go/file/"
+  }
+}
