@@ -9,7 +9,7 @@ import (
 
 // =================== ECB ======================
 func AesEncryptECB(origData []byte, key []byte) (encrypted []byte) {
-	cipher, _ := aes.NewCipher(generateKey(key))
+	block, _ := aes.NewCipher(generateKey(key))
 	length := (len(origData) + aes.BlockSize) / aes.BlockSize
 	plain := make([]byte, length*aes.BlockSize)
 	copy(plain, origData)
@@ -19,18 +19,18 @@ func AesEncryptECB(origData []byte, key []byte) (encrypted []byte) {
 	}
 	encrypted = make([]byte, len(plain))
 	// 分组分块加密
-	for bs, be := 0, cipher.BlockSize(); bs <= len(origData); bs, be = bs+cipher.BlockSize(), be+cipher.BlockSize() {
-		cipher.Encrypt(encrypted[bs:be], plain[bs:be])
+	for bs, be := 0, block.BlockSize(); bs <= len(origData); bs, be = bs+block.BlockSize(), be+block.BlockSize() {
+		block.Encrypt(encrypted[bs:be], plain[bs:be])
 	}
 
 	return encrypted
 }
 func AesDecryptECB(encrypted []byte, key []byte) (decrypted []byte) {
-	cipher, _ := aes.NewCipher(generateKey(key))
+	block, _ := aes.NewCipher(generateKey(key))
 	decrypted = make([]byte, len(encrypted))
 	//
-	for bs, be := 0, cipher.BlockSize(); bs < len(encrypted); bs, be = bs+cipher.BlockSize(), be+cipher.BlockSize() {
-		cipher.Decrypt(decrypted[bs:be], encrypted[bs:be])
+	for bs, be := 0, block.BlockSize(); bs < len(encrypted); bs, be = bs+block.BlockSize(), be+block.BlockSize() {
+		block.Decrypt(decrypted[bs:be], encrypted[bs:be])
 	}
 
 	trim := 0

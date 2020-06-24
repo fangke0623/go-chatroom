@@ -1,6 +1,8 @@
 package discuss
 
-import "wechat/src/common/query"
+import (
+	"wechat/src/common/query"
+)
 
 type Discuss struct {
 	DiscussId    int64  `json:"discussId" db:"discuss_id"`
