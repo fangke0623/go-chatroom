@@ -17,7 +17,7 @@ func init() {
 
 }
 func main() {
-
+	//timer.TimerFunc()
 	http.HandleFunc("/", handle.ResponseHandle)
 
 	err := http.ListenAndServe(":8080", nil)

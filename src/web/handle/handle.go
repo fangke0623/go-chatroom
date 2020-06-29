@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"regexp"
+	"strings"
 	"wechat/src/common/enum"
 	"wechat/src/common/exception"
 	"wechat/src/common/fileHandle"
@@ -27,8 +27,7 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 	var discussForm discuss.Form
 
 	//user
-	flat, _ := regexp.MatchString(enum.UserService, request.URL.Path)
-	if flat {
+	if strings.HasPrefix(request.URL.Path, enum.UserService) {
 		result, e = user.Handle(request.URL.Path, param)
 	} else {
 		switch request.URL.Path {
