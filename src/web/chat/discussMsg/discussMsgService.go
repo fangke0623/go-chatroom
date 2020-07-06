@@ -1,6 +1,8 @@
 package discussMsg
 
 import (
+	"encoding/json"
+	"log"
 	"time"
 	"wechat/src/common/enum"
 	"wechat/src/common/exception"
@@ -26,9 +28,12 @@ func FindDiscussMsgList(param []byte) (interface{}, exception.Error) {
 }
 func AddDiscussMsg(param []byte) (interface{}, exception.Error) {
 	form := Form{}
-	result := ""
 	e := exception.Error{}
-	util.HandleParamsToStruct(param, &form)
+	err := json.Unmarshal(param, &form)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	//util.HandleParamsToStruct(param, &form)
 	discussManForm := discussMan.Form{}
 	discussManForm.UserId = form.UserId
 	discussManForm.DiscussId = form.DiscussId
@@ -42,5 +47,12 @@ func AddDiscussMsg(param []byte) (interface{}, exception.Error) {
 	discussMsg.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 	SaveDiscussMsg(discussMsg)
 	e.ErrorMsg = "发送成功"
-	return []byte(result), e
+	return getMsgDetail(discussMsg), e
+}
+func getMsgDetail(msg DiscussMsg) DiscussMsg {
+	man := discussMan.GetDiscussManById(msg.ManId)
+	u := user.GetUserById(man.UserId)
+	msg.UserId = u.Id
+	msg.Nickname = u.Nickname
+	return msg
 }

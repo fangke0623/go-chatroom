@@ -34,19 +34,19 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 
 		//discuss
 		case "/discuss/add":
-			result, e = discussForm.AddDiscuss(param)
+			result, e = discussForm.Add(param)
 			break
 		case "/discuss/edit":
-			result, e = discussForm.EditDiscuss(param)
+			result, e = discussForm.Edit(param)
 			break
 		case "/discuss/delete":
-			result, e = discussForm.DeleteDiscuss(param)
+			result, e = discussForm.Delete(param)
 			break
 		case "/discuss/list":
-			result, e = discussForm.FindDiscussList(param)
+			result, e = discussForm.FindList(param)
 			break
 		case "/discuss/detail":
-			result, e = discussForm.GetDiscussDetail(param)
+			result, e = discussForm.GetDetail(param)
 			break
 		//discussMan
 		case "/discussMan/list":
@@ -66,9 +66,9 @@ func ResponseHandle(writer http.ResponseWriter, request *http.Request) {
 		case "/discussMsg/list":
 			result, e = discussMsg.FindDiscussMsgList(param)
 			break
-		case "/discussMsg/add":
-			result, e = discussMsg.AddDiscussMsg(param)
-			break
+		//case "/discussMsg/add":
+		//	result, e = discussMsg.AddDiscussMsg(param)
+		//	break
 		//fileHandle
 		case "/uploadBase64":
 			fileHandle.UploadBase64(param)
@@ -91,13 +91,16 @@ func handleParams(request *http.Request) ([]byte, error) {
 	}
 	return param, err
 }
-
-func writerJson(writer http.ResponseWriter, param interface{}, exception exception.Error) {
+func getResult(param interface{}, exception exception.Error) []byte {
 	resultMap := make(map[string]interface{})
 	resultMap["data"] = param
 	resultMap["errorCode"] = exception.ErrorCode
 	resultMap["errorMsg"] = exception.ErrorMsg
 	result, _ := json.Marshal(resultMap)
+	return result
+}
+func writerJson(writer http.ResponseWriter, param interface{}, exception exception.Error) {
+	result := getResult(param, exception)
 	_, err := writer.Write(result)
 	if err != nil {
 		log.Println(err)

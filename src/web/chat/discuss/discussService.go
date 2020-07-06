@@ -9,19 +9,7 @@ import (
 	"wechat/src/web/chat/discussMan"
 )
 
-type ServiceDiscuss interface {
-	AddDiscuss(param []byte) (interface{}, exception.Error)
-
-	EditDiscuss(param []byte) (interface{}, exception.Error)
-
-	DeleteDiscuss(param []byte) (interface{}, exception.Error)
-
-	GetDiscussDetail(param []byte) (interface{}, exception.Error)
-
-	FindDiscussList(param []byte) (interface{}, exception.Error)
-}
-
-func (form Form) AddDiscuss(param []byte) (interface{}, exception.Error) {
+func (form Form) Add(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	result := ""
 
@@ -57,7 +45,7 @@ func formToStruct(form Form) Discuss {
 	discuss.VisibleType = form.VisibleType
 	return discuss
 }
-func (form Form) EditDiscuss(param []byte) (interface{}, exception.Error) {
+func (form Form) Edit(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 
 	util.HandleParamsToStruct(param, &form)
@@ -74,7 +62,7 @@ func (form Form) EditDiscuss(param []byte) (interface{}, exception.Error) {
 
 	return "", e
 }
-func (form Form) DeleteDiscuss(param []byte) (interface{}, exception.Error) {
+func (form Form) Delete(param []byte) (interface{}, exception.Error) {
 	e := exception.Error{}
 	result := ""
 
@@ -91,7 +79,7 @@ func (form Form) DeleteDiscuss(param []byte) (interface{}, exception.Error) {
 
 	return []byte(result), e
 }
-func (form Form) GetDiscussDetail(param []byte) (interface{}, exception.Error) {
+func (form Form) GetDetail(param []byte) (interface{}, exception.Error) {
 
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
@@ -100,7 +88,7 @@ func (form Form) GetDiscussDetail(param []byte) (interface{}, exception.Error) {
 
 	return discuss, e
 }
-func (form Form) FindDiscussList(param []byte) (interface{}, exception.Error) {
+func (form Form) FindList(param []byte) (interface{}, exception.Error) {
 
 	e := exception.Error{}
 	util.HandleParamsToStruct(param, &form)
