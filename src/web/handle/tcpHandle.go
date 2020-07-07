@@ -8,27 +8,33 @@ import (
 
 //var param = make(chan []byte,3)
 var buffer = make([]byte, 1024)
-var link = make(map[string]net.Conn)
+var linkGroup = make(map[string]net.Conn)
 
 func Tcp(listener net.Listener) {
 
 	for {
 		conn, err := listener.Accept()
-		link[conn.RemoteAddr().String()] = conn
 		if err != nil {
 			log.Println("error", err)
 			continue
 		}
-		n, err := conn.Read(buffer)
-
-		result := getResult(discussMsg.AddDiscussMsg(buffer[:n]))
-		go writeResult(result)
-
+		go handleConn(conn)
 	}
 
 }
+func handleConn(conn net.Conn) {
+	linkGroup[conn.RemoteAddr().String()] = conn
+
+	n, err := conn.Read(buffer)
+	if err != nil {
+		log.Println("handleConn", err)
+	}
+	result := getResult(discussMsg.AddDiscussMsg(buffer[:n]))
+	writeResult(result)
+}
+
 func writeResult(result []byte) {
-	for _, conns := range link {
-		_, _ = conns.Write(result)
+	for _, conn := range linkGroup {
+		go conn.Write(result)
 	}
 }
